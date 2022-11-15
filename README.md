@@ -24,7 +24,7 @@ See https://docs.github.com/en/actions/creating-actions/dockerfile-support-for-g
 It contains the following primary binaries:
 
 * [`bitnami apache`](https://hub.docker.com/r/bitnami/apache)
-* [`mod_auth_mellon`](https://packages.debian.org/de/source/sid/libapache2-mod-auth-mellon)
+* `mod_auth_mellon` [code](https://packages.debian.org/de/source/sid/libapache2-mod-auth-mellon) ([github](https://github.com/latchset/mod_auth_mellon))
 
 ## Configuration
 From: https://github.com/bitnami/containers/tree/main/bitnami/apache#customize-this-image

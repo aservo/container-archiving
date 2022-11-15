@@ -1,4 +1,7 @@
-FROM bitnami/apache:2.4.54-debian-11-r27
+
+## This temporary image compiles and installs mod_auth_mellon into bitnami apache
+
+FROM bitnami/apache:2.4.54-debian-11-r27 as builder
 
 USER root
 
@@ -34,6 +37,10 @@ RUN cd /root ;\
     ls -al /opt/bitnami/apache/modules/mod_auth_mellon.so
 
 
+# ---------------------
 
+FROM bitnami/apache:2.4.54-debian-11-r27
 
-USER root
+COPY --from=builder /opt/bitnami/apache/modules/mod_auth_mellon.so /opt/bitnami/apache/modules/mod_auth_mellon.so
+
+USER www-data
