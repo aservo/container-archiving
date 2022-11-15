@@ -43,4 +43,4 @@ FROM bitnami/apache:2.4.54-debian-11-r27
 
 COPY --from=builder /opt/bitnami/apache/modules/mod_auth_mellon.so /opt/bitnami/apache/modules/mod_auth_mellon.so
 
-USER apache
+USER www-data
