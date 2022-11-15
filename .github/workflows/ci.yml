@@ -60,6 +60,8 @@ jobs:
         if: github.event_name != 'release'
         run: |
           docker run ghcr.io/${{ github.repository_owner }}/archiving:latest /opt/bitnami/apache/bin/apachectl -v
+          docker run ghcr.io/${{ github.repository_owner }}/archiving:latest file /opt/bitnami/apache/modules/mod_auth_mellon.so
+
 
       - name: Inspect
         # as push and load may not be set together at the moment
