@@ -23,4 +23,4 @@ RUN apt-get install -y \
     publicsuffix \
     ldap-utils
 
-USER 1001
+USER root
