@@ -41,6 +41,11 @@ RUN cd /root ;\
 
 FROM bitnami/apache:2.4.54-debian-11-r27
 
+# runtime dependencies
+RUN apt-get update && apt-get install -y \
+    liblasso3 \
+  && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /opt/bitnami/apache/modules/mod_auth_mellon.so /opt/bitnami/apache/modules/mod_auth_mellon.so
 
 USER www-data
