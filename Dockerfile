@@ -41,6 +41,8 @@ RUN cd /root ;\
 
 FROM bitnami/apache:2.4.54-debian-11-r27
 
+USER root
+
 # runtime dependencies
 RUN apt-get update && apt-get install -y \
     liblasso3 \
