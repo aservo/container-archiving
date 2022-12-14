@@ -45,7 +45,20 @@ USER root
 
 # runtime dependencies
 RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    curl \
+    make \
+    unzip \
+    wget \
+    openssl \
     liblasso3 \
+    libcurl4 \
+    libsasl2-2 \
+    libsasl2-modules \
+    libsasl2-modules-db \
+    libssh2-1 \
+    publicsuffix \
+    pkg-config \
   && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /opt/bitnami/apache/modules/mod_auth_mellon.so /opt/bitnami/apache/modules/mod_auth_mellon.so
