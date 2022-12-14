@@ -30,7 +30,7 @@ RUN cd /root ;\
     unzip main.zip ;\
     cd mod_auth_mellon-main ;\
     ./autogen.sh ;\
-    ./configure --with-apxs2=/opt/bitnami/apache/bin/apxs ;\
+    ./configure --with-apxs2=/opt/bitnami/apache/bin/apxs --enable-diagnostics;\
     make ;\
     make install;\
     echo 'FINISHED MOD_AUTH_MELLON' ;\
