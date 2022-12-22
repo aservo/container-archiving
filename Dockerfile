@@ -1,35 +1,12 @@
-
-## This temporary image compiles and installs mod_auth_mellon into bitnami apache
-
-FROM bitnami/apache:2.4.54-debian-11-r27 as builder
+FROM bitnami/apache:2.4.54-debian-11-r27
 
 USER root
 
-# dependencies for mod_auth_mellon
-RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    curl \
-    make \
-    unzip \
-    wget \
-    openssl \
-    liblasso3-dev \
-    libcurl4-openssl-dev \
-    publicsuffix \
-    pkg-config \
-    dh-autoreconf \
-  && rm -rf /var/lib/apt/lists/*
-
-# compile mod_auth_mellon
-RUN cd /root ;\
-    wget https://github.com/latchset/mod_auth_mellon/archive/refs/heads/main.zip ; \
-    unzip main.zip ;\
-    cd mod_auth_mellon-main ;\
-    ./autogen.sh ;\
-    ./configure --with-apxs2=/opt/bitnami/apache/bin/apxs --enable-diagnostics;\
-    make ;\
-    make install;\
-    echo 'FINISHED MOD_AUTH_MELLON' ;\
-    ls -al /opt/bitnami/apache/modules/mod_auth_mellon.so
+RUN apt-get update && \
+    apt-get --no-install-recommends --yes install \
+        libapache2-mod-auth-mellon \
+        && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 USER www-data
