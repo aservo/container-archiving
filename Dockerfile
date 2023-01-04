@@ -9,6 +9,7 @@ USER root
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     curl \
+    git \
     make \
     unzip \
     wget \
@@ -22,9 +23,8 @@ RUN apt-get update && apt-get install -y \
 
 # compile mod_auth_mellon
 RUN cd /root ;\
-    wget https://github.com/latchset/mod_auth_mellon/archive/refs/heads/main.zip ; \
-    unzip main.zip ;\
-    cd mod_auth_mellon-main ;\
+    git clone -b feature/improve-logging https://github.com/aservo/mod_auth_mellon.git ; \
+    cd mod_auth_mellon ;\
     ./autogen.sh ;\
     ./configure --with-apxs2=/opt/bitnami/apache/bin/apxs --enable-diagnostics;\
     make ;\
