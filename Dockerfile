@@ -34,4 +34,12 @@ RUN wget "https://github.com/latchset/mod_auth_mellon/releases/download/v${MOD_A
     make install && \
     rm -rf /tmp/mod_auth_mellon*
 
+# install generic packages (keep separated in case we want to use builder image)
+RUN apt-get update && apt-get install -y \
+        inotify-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+# add (and override) scripts to scripts in upstream image
+COPY ./scripts /opt/bitnami/scripts/apache/
+
 USER www-data
