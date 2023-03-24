@@ -1,32 +1,37 @@
-FROM bitnami/apache:2.4.56-debian-11-r2 as builder
+ARG REGISTRY=docker.io
+ARG APACHE_IMAGE_TAG=2.4.56-debian-11-r2
+ARG MOD_AUTH_MELLON_VERSION=0.18.1
+
+FROM ${REGISTRY}/bitnami/apache:${APACHE_IMAGE_TAG} as builder
 
 USER root
 
-# dependencies for mod_auth_mellon
+# install dependencies for mod_auth_mellon
 RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    curl \
-    make \
-    unzip \
-    wget \
-    openssl \
-    liblasso3-dev \
-    libcurl4-openssl-dev \
-    publicsuffix \
-    pkg-config \
-    dh-autoreconf \
-  && rm -rf /var/lib/apt/lists/*
+        ca-certificates \
+        curl \
+        make \
+        unzip \
+        wget \
+        openssl \
+        liblasso3-dev \
+        libcurl4-openssl-dev \
+        publicsuffix \
+        pkg-config \
+        dh-autoreconf \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG MOD_AUTH_MELLON_VERSION
 
 # compile mod_auth_mellon
-RUN cd /root ;\
-    wget https://github.com/latchset/mod_auth_mellon/archive/refs/heads/main.zip ; \
-    unzip main.zip ;\
-    cd mod_auth_mellon-main ;\
-    ./autogen.sh ;\
-    ./configure --with-apxs2=/opt/bitnami/apache/bin/apxs --enable-diagnostics;\
-    make ;\
-    make install;\
-    echo 'FINISHED MOD_AUTH_MELLON' ;\
-    ls -al /opt/bitnami/apache/modules/mod_auth_mellon.so
+RUN wget "https://github.com/latchset/mod_auth_mellon/releases/download/v${MOD_AUTH_MELLON_VERSION}/mod_auth_mellon-${MOD_AUTH_MELLON_VERSION}.tar.gz" -O /tmp/mod_auth_mellon.tar.gz --no-verbose && \
+    mkdir -p /tmp/mod_auth_mellon && \
+    tar -xzf /tmp/mod_auth_mellon.tar.gz -C /tmp/mod_auth_mellon --strip-components=1 && \
+    cd /tmp/mod_auth_mellon && \
+    ./autogen.sh && \
+    ./configure --with-apxs2=/opt/bitnami/apache/bin/apxs --enable-diagnostics && \
+    make && \
+    make install && \
+    rm -rf /tmp/mod_auth_mellon*
 
 USER www-data
