@@ -10,15 +10,15 @@ USER root
 RUN apt-get update && apt-get install -y \
         ca-certificates \
         curl \
+        dh-autoreconf \
+        libcurl4-openssl-dev \
+        liblasso3-dev \
         make \
+        openssl \
+        pkg-config \
+        publicsuffix \
         unzip \
         wget \
-        openssl \
-        liblasso3-dev \
-        libcurl4-openssl-dev \
-        publicsuffix \
-        pkg-config \
-        dh-autoreconf \
     && rm -rf /var/lib/apt/lists/*
 
 ARG MOD_AUTH_MELLON_VERSION
