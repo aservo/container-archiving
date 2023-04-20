@@ -36,10 +36,28 @@ RUN wget "https://github.com/latchset/mod_auth_mellon/releases/download/v${MOD_A
 
 # install generic packages (keep separated in case we want to use builder image)
 RUN apt-get update && apt-get install -y \
+        git \
         inotify-tools \
+        zip \
+    && rm -rf /var/lib/apt/lists/*
+
+# install cgit without postinst script (does not work with the Bitnami Apache image)
+ARG CGIT_PACKAGE=cgit
+ARG CGIT_TMP_DIR=/tmp/${CGIT_PACKAGE}
+RUN apt-get update \
+    && mkdir -p ${CGIT_TMP_DIR} \
+    && chown -R _apt:root ${CGIT_TMP_DIR} \
+    && cd ${CGIT_TMP_DIR} \
+    && apt-get download ${CGIT_PACKAGE} \
+    && dpkg --unpack $(find . -name "${CGIT_PACKAGE}*.deb" -printf "%f" | head -n 1) \
+    && rm /var/lib/dpkg/info/${CGIT_PACKAGE}.postinst -f \
+    ## usually, we would need to run 'dpkg --configure ${CGIT_PACKAGE}' now, but then the dependencies would be missing
+    ## instead, we just run 'apt-get install -yf' which installs both, dependencies and cgit without postinst script
+    && apt-get install -yf \
+    && rm -rf /tmp/${CGIT_PACKAGE}* \
     && rm -rf /var/lib/apt/lists/*
 
 # add (and override) scripts to scripts in upstream image
 COPY ./scripts /opt/bitnami/scripts/apache/
 
-USER www-data
+USER 1001

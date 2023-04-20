@@ -15,6 +15,13 @@ It contains the following primary binaries:
 
 * [`bitnami apache`](https://hub.docker.com/r/bitnami/apache)
 * [`mod_auth_mellon`](https://github.com/latchset/mod_auth_mellon)
+* [`cgit`](https://git.zx2c4.com/cgit)
+
+Additionally it contains the following secondary binaries:
+
+* `git` (for `cgit`)
+* `inotify-tools` (for Apache config auto-reload)
+* `zip` (for `cgit`)
 
 ## Configuration
 
@@ -37,3 +44,13 @@ To deviate from defaults, start with mounting `/opt/bitnami/apache/conf/httpd.co
 
 * `APACHE_HTTP_PORT_NUMBER`
 * `APACHE_HTTPS_PORT_NUMBER`
+
+### cgit
+
+The cgit installation uses the following directories:
+
+* CGI script: `/usr/lib/cgit/cgit.cgi`
+* Web assets: `/usr/share/cgit/`
+  * `cgit.css`
+  * `cgit.png`
+* Configuration: `/etc/cgitrc`
