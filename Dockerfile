@@ -1,5 +1,5 @@
 ARG REGISTRY=docker.io
-ARG APACHE_IMAGE_TAG=2.4.57-debian-11-r7
+ARG APACHE_IMAGE_TAG=2.4.57-debian-11-r124
 ARG MOD_AUTH_MELLON_VERSION=0.18.1
 
 FROM ${REGISTRY}/bitnami/apache:${APACHE_IMAGE_TAG} as builder
@@ -35,8 +35,10 @@ RUN wget "https://github.com/latchset/mod_auth_mellon/releases/download/v${MOD_A
     rm -rf /tmp/mod_auth_mellon*
 
 # install generic packages (keep separated in case we want to use builder image)
+# (highlight is required for cgit syntax highlighting)
 RUN apt-get update && apt-get install -y \
         git \
+        highlight \
         inotify-tools \
         zip \
     && rm -rf /var/lib/apt/lists/*
