@@ -62,4 +62,8 @@ RUN apt-get update \
 # add (and override) scripts to scripts in upstream image
 COPY ./scripts /opt/bitnami/scripts/apache/
 
+ADD sha256path.sh /opt/apache2-prg/
+
+RUN chmod +x /opt/apache2-prg/sha256path.sh
+
 USER 1001
