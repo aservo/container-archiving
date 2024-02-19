@@ -8,7 +8,8 @@ on:
   # lead to image pushed on unwanted branches,
   # see the branch-based event usages below!
   push:
-    branches: [ main ]
+    branches:
+      - '*'
   pull_request:
     branches: [ main ]
   release:
@@ -42,6 +43,8 @@ jobs:
             echo "TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
           elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
             echo "TAG=pr${{github.event.number}}" >> $GITHUB_ENV
+          else
+            echo "TAG=g-${GITHUB_SHA::7}" >> $GITHUB_ENV
           fi
 
       - name: Login to GitHub Container Registry
